@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BudgetBytes • Submit a Resource</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg-main:#050816;
+      --bg-card:#0b1020;
+      --border:#1f2937;
+      --accent:#38bdf8;
+      --accent-soft:rgba(56,189,248,0.12);
+      --accent-hover:#0ea5e9;
+      --text-main:#f9fafb;
+      --text-muted:#9ca3af;
+      --radius:16px;
+      --error:#f97373;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color:var(--text-main);
+    }
+
+    header{
+      background:linear-gradient(90deg,#020617,#020617 50%,#0f172a);
+      border-bottom:1px solid #111827;
+      padding:1rem 1.5rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1.5rem;
+    }
+    header h1{
+      margin:0;
+      font-size:1.5rem;
+      font-weight:750;
+      letter-spacing:.03em;
+    }
+    header p{
+      margin:.3rem 0 0;
+      color:var(--text-muted);
+      font-size:.9rem;
+      max-width:420px;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:.75rem;
+      flex-wrap:wrap;
+    }
+    .nav-link{
+      font-size:.85rem;
+      color:var(--text-muted);
+      text-decoration:none;
+      padding:.35rem .75rem;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.35);
+      backdrop-filter:blur(10px);
+    }
+    .nav-link:hover{
+      color:var(--text-main);
+      border-color:var(--accent);
+    }
+    .nav-link.primary{
+      background:var(--accent);
+      color:#020617;
+      border-color:var(--accent);
+      font-weight:650;
+    }
+    .nav-link.primary:hover{
+      background:var(--accent-hover);
+    }
+
+    main{
+      max-width:720px;
+      margin:1.75rem auto 2.5rem;
+      padding:0 1rem;
+    }
+
+    .card{
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.4rem 1.25rem;
+      box-shadow:0 20px 55px rgba(15,23,42,.85);
+    }
+
+    h2{
+      margin-top:0;
+      margin-bottom:.4rem;
+      font-size:1.35rem;
+    }
+    .sub{
+      color:var(--text-muted);
+      font-size:.9rem;
+      margin-bottom:1.1rem;
+    }
+
+    .field{
+      margin-bottom:.9rem;
+    }
+    label{
+      display:block;
+      font-size:.85rem;
+      margin-bottom:.15rem;
+    }
+    label span{
+      color:var(--accent);
+      font-size:.8rem;
+      margin-left:.1rem;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    select,
+    textarea{
+      width:100%;
+      padding:.55rem .6rem;
+      border-radius:10px;
+      border:1px solid #1f2937;
+      background:#020617;
+      color:var(--text-main);
+      font-size:.9rem;
+      outline:none;
+    }
+    input::placeholder,
+    textarea::placeholder{
+      color:#6b7280;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(56,189,248,0.55);
+    }
+    textarea{
+      min-height:96px;
+      resize:vertical;
+    }
+
+    .hint{
+      font-size:.8rem;
+      color:var(--text-muted);
+      margin-top:.2rem;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.35rem;
+      margin-top:.6rem;
+      background:var(--accent);
+      color:#020617;
+      padding:.55rem 1rem;
+      border-radius:999px;
+      font-weight:650;
+      font-size:.9rem;
+      border:1px solid rgba(15,23,42,.9);
+      cursor:pointer;
+      box-shadow:0 16px 38px rgba(56,189,248,.35);
+      transition:background .15s ease, transform .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover{
+      background:var(--accent-hover);
+      transform:translateY(-1px);
+      box-shadow:0 20px 48px rgba(56,189,248,.5);
+    }
+    .btn[disabled]{
+      opacity:.6;
+      cursor:wait;
+      transform:none;
+      box-shadow:none;
+    }
+
+    .status{
+      margin-top:1rem;
+      font-size:.85rem;
+      min-height:1.2em;
+    }
+    .status.ok{
+      color:#4ade80;
+    }
+    .status.error{
+      color:var(--error);
+    }
+
+    footer{
+      text-align:center;
+      color:var(--text-muted);
+      font-size:.78rem;
+      padding:0 1rem 1.4rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>BudgetBytes • Submit a Resource</h1>
+      <p>Help grow BudgetBytes by sharing programs, devices, or learning tools you’ve found.</p>
+    </div>
+    <nav class="nav-links">
+      <a href="/" class="nav-link">Back to Resource Hub</a>
+      <a href="/submit" class="nav-link primary">Submit</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Share an Affordable Tech Resource</h2>
+      <p class="sub">
+        Submissions are stored in Azure Table Storage. This keeps everything together for future review or expansion.
+      </p>
+
+      <form id="resourceForm" onsubmit="handleSubmit(event)">
+        <div class="field">
+          <label for="name">Resource name <span>*</span></label>
+          <input id="name" name="name" type="text" required placeholder="e.g., Girls Who Code" />
+        </div>
+
+        <div class="field">
+          <label for="url">Website link <span>*</span></label>
+          <input id="url" name="url" type="url" required placeholder="https://example.org" />
+        </div>
+
+        <div class="field">
+          <label for="category">Category <span>*</span></label>
+          <select id="category" name="category" required>
+            <option value="coding">Coding / Software Development</option>
+            <option value="hardware">Devices / Internet Access</option>
+            <option value="career">Career / Certificates</option>
+            <option value="community">Community / Nonprofit Support</option>
+            <option value="general">Other / General Tech</option>
+          </select>
+          <div class="hint">These categories match how the main hub is organized.</div>
+        </div>
+
+        <div class="field">
+          <label for="tags">Tags</label>
+          <input id="tags" name="tags" type="text" placeholder="e.g., women, students, free, self-paced" />
+          <div class="hint">Comma-separated keywords. Example: <code>women, students, beginner</code></div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Why is this helpful?</label>
+          <textarea id="notes" name="notes" placeholder="Short description, eligibility, or what makes it affordable."></textarea>
+        </div>
+
+        <button class="btn" id="submitBtn" type="submit">
+          <span>Submit Resource</span>
+        </button>
+
+        <div id="status" class="status"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    Submissions are stored securely in Azure Table Storage for future review and potential inclusion in the main hub.
+  </footer>
+
+  <script>
+    async function handleSubmit(event){
+      event.preventDefault();
+      const statusEl = document.getElementById("status");
+      const btn = document.getElementById("submitBtn");
+      const form = document.getElementById("resourceForm");
+
+      statusEl.textContent = "";
+      statusEl.className = "status";
+      btn.disabled = true;
+
+      const name = document.getElementById("name").value.trim();
+      const url = document.getElementById("url").value.trim();
+      const category = document.getElementById("category").value;
+      const tagsRaw = document.getElementById("tags").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+
+      if(!name || !url){
+        statusEl.textContent = "Name and URL are required.";
+        statusEl.classList.add("error");
+        btn.disabled = false;
+        return;
+      }
+
+      const tags = tagsRaw
+        ? tagsRaw.split(",").map(t => t.trim()).filter(Boolean)
+        : [];
+
+      try{
+        const resp = await fetch("/api/v1/resources", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            url,
+            category,
+            tags,
+            notes
+          })
+        });
+
+        const data = await resp.json().catch(() => ({}));
+
+        if(!resp.ok || !data.ok){
+          throw new Error(data.error || ("Request failed (" + resp.status + ")"));
+        }
+
+        statusEl.textContent = "✅ Resource submitted successfully!";
+        statusEl.classList.add("ok");
+        form.reset();
+        document.getElementById("category").value = "coding";
+      }catch(err){
+        console.error(err);
+        statusEl.textContent = "⚠️ Error submitting resource: " + err.message;
+        statusEl.classList.add("error");
+      }finally{
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
