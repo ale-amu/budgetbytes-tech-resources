@@ -1,9 +1,9 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 import logging
 from datetime import datetime
-
-from dotenv import load_dotenv
-load_dotenv() 
 
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
