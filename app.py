@@ -2,6 +2,9 @@ import os
 import logging
 from datetime import datetime
 
+from dotenv import load_dotenv
+load_dotenv() 
+
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from azure.storage.blob import BlobServiceClient, ContentSettings, PublicAccess
@@ -13,9 +16,9 @@ from azure.data.tables import TableServiceClient
 PORT = int(os.getenv("PORT", 8080))
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE_BYTES", 10 * 1024 * 1024))  # 10 MB default
 
-CONTAINER = os.getenv("IMAGES_CONTAINER", "affordable-resources")
-AZURE_CONN = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-TABLE_NAME = os.getenv("RESOURCES_TABLE", "resources")
+CONTAINER = os.environ.get("IMAGES_CONTAINER", "affordable-resources")
+AZURE_CONN = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+TABLE_NAME = os.environ.get("RESOURCES_TABLE", "resources")
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
