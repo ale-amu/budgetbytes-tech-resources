@@ -75,5 +75,6 @@ Flask and Azure Blob were utilized in the construction of this endeavor as Azure
 - Add “favorites” or “save resources”
 
 ## 7) Links (Required)
-GitHub Repo: <[REPO-URL](https://github.com/ale-amu/budgetbytes-tech-resources)>
-Public Cloud App (optional): <[CLOUD-URL](https://budgetbytes-app.purplemeadow-43f006f4.canadacentral.azurecontainerapps.io/)>
+GitHub Repo: <https://github.com/ale-amu/budgetbytes-tech-resources>
+
+Public Cloud App (optional): <https://budgetbytes-app.purplemeadow-43f006f4.canadacentral.azurecontainerapps.io/>
