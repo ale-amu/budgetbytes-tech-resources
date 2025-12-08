@@ -205,7 +205,7 @@
   <header>
     <div>
       <h1>BudgetBytes • Submit a Resource</h1>
-      <p>Help grow BudgetBytes by sharing programs, devices, or learning tools you’ve found.</p>
+      <p>Help grow BudgetBytes by sharing programs, devices, or learning tools you've found.</p>
     </div>
     <nav class="nav-links">
       <a href="/" class="nav-link">Back to Resource Hub</a>
@@ -217,7 +217,7 @@
     <section class="card">
       <h2>Share an Affordable Tech Resource</h2>
       <p class="sub">
-        Submissions are stored in Azure Table Storage. This keeps everything together for future review or expansion.
+        Submissions are stored in Azure Table Storage and will appear on the homepage immediately!
       </p>
 
       <form id="resourceForm" onsubmit="handleSubmit(event)">
@@ -229,6 +229,13 @@
         <div class="field">
           <label for="url">Website link <span>*</span></label>
           <input id="url" name="url" type="url" required placeholder="https://example.org" />
+        </div>
+
+        <!-- FIXED: Added logo URL field -->
+        <div class="field">
+          <label for="logo_url">Logo image URL</label>
+          <input id="logo_url" name="logo_url" type="url" placeholder="https://example.org/logo.png (optional)" />
+          <div class="hint">Direct link to an image. Leave blank for default logo.</div>
         </div>
 
         <div class="field">
@@ -264,7 +271,7 @@
   </main>
 
   <footer>
-    Submissions are stored securely in Azure Table Storage for future review and potential inclusion in the main hub.
+    Submissions are stored securely in Azure Table Storage and appear immediately on the homepage.
   </footer>
 
   <script>
@@ -280,6 +287,7 @@
 
       const name = document.getElementById("name").value.trim();
       const url = document.getElementById("url").value.trim();
+      const logo_url = document.getElementById("logo_url").value.trim();  // FIXED: Get logo URL
       const category = document.getElementById("category").value;
       const tagsRaw = document.getElementById("tags").value.trim();
       const notes = document.getElementById("notes").value.trim();
@@ -302,6 +310,7 @@
           body: JSON.stringify({
             name,
             url,
+            logo_url: logo_url || undefined,  // FIXED: Include logo_url
             category,
             tags,
             notes
@@ -314,10 +323,16 @@
           throw new Error(data.error || ("Request failed (" + resp.status + ")"));
         }
 
-        statusEl.textContent = "✅ Resource submitted successfully!";
+        statusEl.textContent = "✅ Resource submitted successfully! Redirecting to homepage...";
         statusEl.classList.add("ok");
         form.reset();
         document.getElementById("category").value = "coding";
+        
+        // Redirect to homepage after 2 seconds so user can see their submission
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+        
       }catch(err){
         console.error(err);
         statusEl.textContent = "⚠️ Error submitting resource: " + err.message;

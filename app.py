@@ -86,8 +86,37 @@ def allowed_file_size(content_length):
 # ================================
 @app.get("/")
 def index():
-    # Resource hub page (card layout)
-    return render_template("index.html")
+    """FIXED: Now dynamically loads resources from Azure Table Storage"""
+    try:
+        table_client = get_table_client()
+        entities = list(table_client.list_entities())
+        
+        # Convert table entities to template-friendly format
+        resources = []
+        for e in entities:
+            tags_raw = e.get("tags") or ""
+            tags = [t.strip() for t in tags_raw.split(",") if t.strip()]
+            
+            resources.append({
+                "name": e.get("name"),
+                "url": e.get("url"),
+                "category": e.get("category", "general"),
+                "tags": tags,
+                "notes": e.get("notes", ""),
+                "logo_url": e.get("logo_url", "/static/img/default-logo.png"),
+                "created_at": e.get("created_at"),
+            })
+        
+        # Sort by newest first
+        resources.sort(key=lambda r: r.get("created_at") or "", reverse=True)
+        
+        logger.info(f"✅ Loaded {len(resources)} resources from Azure Table Storage")
+        
+    except Exception as e:
+        logger.exception("❌ Failed to load resources from database")
+        resources = []  # Fallback to empty list
+    
+    return render_template("index.html", resources=resources)
 
 
 @app.get("/submit")
@@ -158,6 +187,7 @@ def gallery():
 @app.post("/api/v1/resources")
 def create_resource():
     """
+    FIXED: Now includes logo_url field
     Create a new resource in Azure Table Storage.
     JSON body:
     {
@@ -165,7 +195,8 @@ def create_resource():
       "url": "https://girlswhocode.com",
       "category": "coding",
       "tags": ["women", "students"],
-      "notes": "Free coding programs"
+      "notes": "Free coding programs",
+      "logo_url": "https://example.com/logo.png" (optional)
     }
     """
     try:
@@ -187,6 +218,7 @@ def create_resource():
         tags_str = str(tags)
 
     notes = data.get("notes") or ""
+    logo_url = data.get("logo_url") or "/static/img/default-logo.png"  # FIXED: Added logo_url
 
     table_client = get_table_client()
     now = datetime.utcnow()
@@ -200,15 +232,16 @@ def create_resource():
         "category": category or "general",
         "tags": tags_str,
         "notes": notes,
+        "logo_url": logo_url,  # FIXED: Added logo_url field
         "created_at": now.isoformat() + "Z",
     }
 
     try:
         table_client.create_entity(entity=entity)
-        logger.info(f"Created resource entity {row_key} in table {TABLE_NAME}")
+        logger.info(f"✅ Created resource entity {row_key} in table {TABLE_NAME}")
         return jsonify(ok=True, resource=entity), 201
     except Exception as e:
-        logger.exception("Failed to create resource")
+        logger.exception("❌ Failed to create resource")
         return jsonify(ok=False, error=str(e)), 500
 
 
@@ -216,7 +249,6 @@ def create_resource():
 def list_resources():
     """
     List all resources stored in Azure Table Storage.
-    (You can use this later if you want a dynamic hub.)
     """
     try:
         table_client = get_table_client()
@@ -235,6 +267,7 @@ def list_resources():
                 "category": e.get("category"),
                 "tags": tags,
                 "notes": e.get("notes"),
+                "logo_url": e.get("logo_url", "/static/img/default-logo.png"),
                 "created_at": e.get("created_at"),
             })
 
@@ -249,6 +282,4 @@ def list_resources():
 # ENTRYPOINT
 # ================================
 if __name__ == "__main__":
-    # Make sure your env var is set, then:
-    #   python3 app.py
     app.run(host="0.0.0.0", port=PORT)

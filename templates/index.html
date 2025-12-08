@@ -7,15 +7,14 @@
 
   <style>
     :root {
-      /* “Black ice” modern palette */
-      --bg-main:#050816;
-      --bg-card:#0b1020;
-      --border:#1f2937;
-      --accent:#38bdf8;
-      --accent-soft:rgba(56,189,248,0.12);
-      --accent-hover:#0ea5e9;
-      --text-main:#f9fafb;
-      --text-muted:#9ca3af;
+      --bg-main:#f4f6fa;
+      --bg-card:#ffffff;
+      --border:#d4d7dd;
+      --accent:#2667ff;
+      --accent-soft:rgba(38,103,255,0.10);
+      --accent-hover:#1c4fd6;
+      --text-main:#1f2937;
+      --text-muted:#6b7280;
       --radius:16px;
     }
 
@@ -24,30 +23,53 @@
     body {
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      background:radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      background:#f4f6fa;
       color:var(--text-main);
     }
 
-    header {
-      background:linear-gradient(90deg,#020617,#020617 50%,#0f172a);
-      border-bottom:1px solid #111827;
-      padding:1rem 1.5rem;
+    /* HEADER */
+    .site-header {
+      width: 100%;
+      background:white;
+      border-bottom:1px solid var(--border);
+      padding:1rem 1.2rem;
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+
+    .header-inner {
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:2rem;
+    }
+
+    .left-group {
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:1.5rem;
+      gap:1rem;
     }
-    header h1 {
+
+    .site-logo {
+      width:48px;
+      height:48px;
+      object-fit:contain;
+    }
+
+    .title-block h1 {
       margin:0;
-      font-size:1.6rem;
+      font-size:1.65rem;
       font-weight:750;
-      letter-spacing:.03em;
+      color:#111827;
     }
-    header p {
-      margin:.3rem 0 0;
+
+    .title-block p {
+      margin:.25rem 0 0;
+      font-size:.88rem;
       color:var(--text-muted);
-      font-size:.9rem;
-      max-width:420px;
     }
 
     .nav-links {
@@ -55,22 +77,23 @@
       gap:.75rem;
       flex-wrap:wrap;
     }
+
     .nav-link {
       font-size:.85rem;
-      color:var(--text-muted);
+      color:var(--text-main);
+      background:white;
       text-decoration:none;
-      padding:.35rem .75rem;
+      padding:.35rem .9rem;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,.35);
-      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
     }
     .nav-link:hover {
-      color:var(--text-main);
-      border-color:var(--accent);
+      border-color:var(--text-main);
     }
+
     .nav-link.primary {
       background:var(--accent);
-      color:#020617;
+      color:white;
       border-color:var(--accent);
       font-weight:650;
     }
@@ -78,527 +101,407 @@
       background:var(--accent-hover);
     }
 
+    /* MAIN CONTENT */
     main {
       max-width:1100px;
-      margin:1.5rem auto 2.5rem;
+      margin:2rem auto;
       padding:0 1rem;
     }
 
-    /* HERO */
     .hero {
-      margin-bottom:2rem;
       text-align:center;
+      margin-bottom:2rem;
     }
     .hero-title {
-      font-size:1.6rem;
+      font-size:1.7rem;
       font-weight:750;
-      margin-bottom:.35rem;
+      margin-bottom:.3rem;
     }
     .hero-subtitle {
       max-width:640px;
       margin:0 auto;
+      font-size:.95rem;
+      line-height:1.45rem;
       color:var(--text-muted);
-      font-size:.9rem;
-      line-height:1.4rem;
     }
 
     h2 {
       margin-top:2.2rem;
       margin-bottom:.75rem;
-      font-size:1.25rem;
-      font-weight:650;
-      letter-spacing:.02em;
+      font-size:1.3rem;
+      font-weight:700;
+      color:#111827;
     }
+
     h2::after {
       content:"";
       display:block;
       margin-top:.25rem;
-      width:72px;
-      height:2px;
-      background:linear-gradient(90deg,var(--accent),transparent);
-      opacity:.8;
+      width:64px;
+      height:3px;
+      background:var(--accent);
+      border-radius:6px;
     }
 
-    /* GRID OF CARDS */
+    /* GRID */
     .grid {
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
-      gap:18px;
+      gap:20px;
       margin-bottom:2rem;
     }
 
+    /* CARD */
     .card {
       background:var(--bg-card);
       border:1px solid var(--border);
-      padding:1rem;
+      padding:1.25rem 1.1rem;
       border-radius:var(--radius);
-      box-shadow:0 18px 45px rgba(15,23,42,.75);
+      transition:all .18s ease;
+      box-shadow:0 4px 14px rgba(0,0,0,0.04);
       display:flex;
       flex-direction:column;
-      gap:.5rem;
-      position:relative;
-      overflow:hidden;
-      isolation:isolate;
-      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
-    .card::before {
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background:radial-gradient(circle at top, rgba(56,189,248,0.18), transparent 55%);
-      opacity:0;
-      transition:opacity .2s ease;
-      z-index:-1;
-    }
+
     .card:hover {
-      transform:translateY(-4px) scale(1.01);
+      transform:translateY(-3px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.08);
       border-color:var(--accent);
-      box-shadow:0 26px 60px rgba(15,23,42,.95);
-    }
-    .card:hover::before {
-      opacity:1;
     }
 
     .card-logo {
       width:90px;
       height:90px;
+      margin-bottom:.35rem;
       object-fit:contain;
       border-radius:18px;
-      background:rgba(15,23,42,0.95);
-      border:1px solid #1f2937;
+      background:#f9fafb;
       padding:10px;
-      margin-bottom:.35rem;
-      box-shadow:0 10px 30px rgba(0,0,0,.75);
+      box-shadow:0 8px 18px rgba(0,0,0,0.08);
     }
 
     .title {
       font-weight:700;
       font-size:1.02rem;
-      margin-bottom:.15rem;
-    }
-
-    .desc {
-      color:var(--text-muted);
-      font-size:.9rem;
-      line-height:1.4rem;
-      flex-grow:1;
+      margin-bottom:.1rem;
+      color:#111827;
     }
 
     .meta-tag {
       display:inline-flex;
       align-items:center;
-      gap:.35rem;
+      gap:.4rem;
       font-size:.75rem;
       color:var(--accent);
       background:var(--accent-soft);
+      padding:.18rem .55rem;
       border-radius:999px;
-      padding:.15rem .6rem;
-      margin-bottom:.15rem;
+      margin-bottom:.2rem;
     }
-    .meta-dot {
-      width:7px;
-      height:7px;
-      border-radius:999px;
-      background:var(--accent);
+
+    .desc {
+      color:var(--text-muted);
+      font-size:.9rem;
+      line-height:1.35rem;
+      flex-grow:1;
     }
 
     .btn {
-      margin-top:.4rem;
+      margin-top:.5rem;
+      display:inline-block;
       text-align:center;
       background:var(--accent);
-      color:#020617;
-      padding:.55rem .8rem;
+      color:white;
+      padding:.55rem .85rem;
       border-radius:999px;
       font-weight:650;
       text-decoration:none;
-      transition:background .15s ease, transform .15s ease, box-shadow .15s ease;
-      font-size:.86rem;
-      border:1px solid rgba(15,23,42,.9);
-      box-shadow:0 14px 35px rgba(56,189,248,.35);
+      transition:all .15s ease;
     }
-    .btn:hover{
+    .btn:hover {
       background:var(--accent-hover);
-      transform:translateY(-1px);
-      box-shadow:0 18px 45px rgba(56,189,248,.5);
     }
 
     footer {
       text-align:center;
       color:var(--text-muted);
-      font-size:.78rem;
-      padding:0 1rem 1.4rem;
+      font-size:.8rem;
+      padding:2rem 0;
     }
 
-    /* Back to Top button */
-    #backToTop {
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      padding:.65rem .9rem;
-      background:var(--accent);
-      color:#020617;
-      border:none;
+    .community-badge {
+      display:inline-block;
+      background:#10b981;
+      color:white;
+      font-size:.7rem;
+      padding:.2rem .5rem;
       border-radius:999px;
-      font-size:.85rem;
       font-weight:650;
-      cursor:pointer;
-      box-shadow:0 18px 40px rgba(0,0,0,.6);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .3s ease, transform .25s ease, background .15s ease;
-      z-index:40;
+      margin-bottom:.3rem;
     }
-    #backToTop:hover {
-      background:var(--accent-hover);
-      transform:translateY(-2px);
-    }
-    #backToTop.show {
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .site-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.4rem;
-  padding: 1rem 1.2rem;
-  background: linear-gradient(90deg,#020617,#020617 50%,#0f172a);
-  border-bottom: 1px solid #111827;
-}
-
-.left-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.site-logo {
-  width: 56px; 
-  height: 56px; 
-  object-fit: contain;
-  filter: drop-shadow(0 0 6px rgba(0,0,0,0.5));
-}
-
-.title-block h1 {
-  margin: 0;
-  font-size: 1.65rem;
-  font-weight: 750;
-  letter-spacing: .02em;
-}
-
-.title-block p {
-  margin: .25rem 0 0;
-  color: var(--text-muted);
-  font-size: .88rem;
-}
-
-.site-header {
-  width: 100%;
-  background: linear-gradient(90deg,#020617,#020617 50%,#0f172a);
-  border-bottom: 1px solid #111827;
-  padding: 1rem 1.2rem;
-}
-
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-}
-
-.left-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.site-logo {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 6px rgba(0,0,0,0.5));
-}
-
-.title-block h1 {
-  margin: 0;
-  font-size: 1.7rem;
-  font-weight: 750;
-}
-
-.title-block p {
-  margin: .25rem 0 0;
-  color: var(--text-muted);
-  font-size: .88rem;
-}
-
 
   </style>
 </head>
 
 <body>
-    <header class="site-header">
-        <div class="header-inner">
-      
-          <div class="left-group">
-            <img src="/static/img/BB_logo.png" alt="Site Logo" class="site-logo">
-      
-            <div class="title-block">
-              <h1>BudgetBytes</h1>
-              <p>A curated list of low-cost and free tech programs, devices, and learning opportunities.</p>
-            </div>
-          </div>
-      
-          <nav class="nav-links">
-            <a href="/" class="nav-link">Resource Hub</a>
-            <a href="/submit" class="nav-link primary">Submit a Resource</a>
-          </nav>
-      
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="left-group">
+        <img src="/static/img/BB_logo.png" class="site-logo" alt="logo">
+        <div class="title-block">
+          <h1>BudgetBytes</h1>
+          <p>A curated list of low-cost and free tech programs, devices, and learning opportunities.</p>
         </div>
-      </header>      
+      </div>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Resource Hub</a>
+        <a href="/submit" class="nav-link primary">Submit a Resource</a>
+      </nav>
+
+    </div>
+  </header>
 
   <main>
-    <!-- HERO TEXT (centered) -->
-    <section class="hero">
-      <div class="hero-title">Affordable I.T. Resource Hub</div>
+
+    <div class="hero">
+      <h1 class="hero-title">Affordable I.T. Resource Hub</h1>
       <p class="hero-subtitle">
         Upload community-submitted affordable tech resources, images, and educational assets.
         This public hub helps students & families find low-cost technology options.
       </p>
-    </section>
+    </div>
 
-    <!-- ============================= -->
-    <!--   DEV + CODING RESOURCES     -->
-    <!-- ============================= -->
+    <!-- CURATED RESOURCES (Your Original Hardcoded Ones) -->
     <h2>Software Development • Coding • Tech Skills</h2>
     <div class="grid">
 
       <div class="card">
-        <img src="/static/img/girlswhocode.png" alt="Girls Who Code logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Coding • Girls & non-binary youth</div>
+        <img src="/static/img/girlswhocode.png" class="card-logo" alt="Girls Who Code logo">
+        <div class="meta-tag">Coding • Girls & non-binary youth</div>
         <div class="title">Girls Who Code</div>
-        <div class="desc">
+        <p class="desc">
           International nonprofit closing the gender gap in tech through clubs, summer immersion,
           self-paced programs, and alumni support.
-        </div>
+        </p>
         <a href="https://girlswhocode.com" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/freecodecamp.png" alt="freeCodeCamp logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Self-paced • Certificates</div>
+        <img src="/static/img/freecodecamp.png" class="card-logo" alt="freeCodeCamp logo">
+        <div class="meta-tag">Self-paced • Certificates</div>
         <div class="title">freeCodeCamp</div>
-        <div class="desc">
+        <p class="desc">
           100% free coding platform with full-length certifications in web dev, data analysis,
           Python, machine learning, and more.
-        </div>
+        </p>
         <a href="https://www.freecodecamp.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/blackgirlscode.png" alt="Black Girls Code logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Youth • Black girls</div>
+        <img src="/static/img/blackgirlscode.png" class="card-logo" alt="Black Girls Code logo">
+        <div class="meta-tag">Youth • Black girls</div>
         <div class="title">Black Girls Code</div>
-        <div class="desc">
+        <p class="desc">
           Workshops and camps that introduce girls of color (ages 7–17) to programming,
           game design, robotics, and STEM careers.
-        </div>
+        </p>
         <a href="https://wearebgc.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/code_org.png" alt="Code.org logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> K–12 • CS fundamentals</div>
+        <img src="/static/img/code_org.png" class="card-logo" alt="Code.org logo">
+        <div class="meta-tag">K–12 • CS fundamentals</div>
         <div class="title">Code.org</div>
-        <div class="desc">
+        <p class="desc">
           Beginner-friendly computer science curriculum and Hour of Code activities for all ages,
           including Python and app design.
-        </div>
+        </p>
         <a href="https://code.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/khanacademy.png" alt="Khan Academy logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Self-paced • Foundations</div>
+        <img src="/static/img/khanacademy.png" class="card-logo" alt="Khan Academy logo">
+        <div class="meta-tag">Self-paced • Foundations</div>
         <div class="title">Khan Academy – Computing</div>
-        <div class="desc">
+        <p class="desc">
           Free courses covering JavaScript, HTML/CSS, SQL, and Hour of Code projects with
           interactive coding challenges.
-        </div>
+        </p>
         <a href="https://www.khanacademy.org/computing" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/scratch.png" alt="Scratch logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Beginners • Creative coding</div>
+        <img src="/static/img/scratch.png" class="card-logo" alt="Scratch logo">
+        <div class="meta-tag">Beginners • Creative coding</div>
         <div class="title">Scratch</div>
-        <div class="desc">
+        <p class="desc">
           Block-based coding platform from MIT that lets learners create games, stories, and
           animations while learning CS concepts.
-        </div>
+        </p>
         <a href="https://scratch.mit.edu" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/amazon-cyber.png" alt="Amazon Cyber Robotics logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Short challenge • Robotics</div>
+        <img src="/static/img/amazon-cyber.png" class="card-logo" alt="Amazon Cyber Robotics logo">
+        <div class="meta-tag">Short challenge • Robotics</div>
         <div class="title">Amazon Cyber Robotics Challenge</div>
-        <div class="desc">
+        <p class="desc">
           Free 3-hour virtual challenge that teaches programming basics using Amazon fulfillment
           center robotics simulations.
-        </div>
+        </p>
         <a href="https://www.amazonfutureengineer.com/amazon-cyber-robotics-challenge" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/griptape.png" alt="Griptape logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Self-directed • Stipend</div>
+        <img src="/static/img/griptape.png" class="card-logo" alt="Griptape logo">
+        <div class="meta-tag">Self-directed • Stipend</div>
         <div class="title">Griptape Challenge</div>
-        <div class="desc">
+        <p class="desc">
           Supports teens in building self-directed learning projects (including tech) with a mentor
           and up to $500 in funding.
-        </div>
+        </p>
         <a href="https://griptape.org" target="_blank" class="btn">Visit site</a>
       </div>
 
     </div>
 
-    <!-- ============================= -->
-    <!--      HARDWARE ACCESS          -->
-    <!-- ============================= -->
     <h2>Low-Cost Laptops • Devices • Internet Access</h2>
     <div class="grid">
 
       <div class="card">
-        <img src="/static/img/HITLogo.png" alt="Human-I-T logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Devices • Internet</div>
+        <img src="/static/img/HITLogo.png" class="card-logo" alt="Human-I-T logo">
+        <div class="meta-tag">Devices • Internet</div>
         <div class="title">Human-I-T</div>
-        <div class="desc">
+        <p class="desc">
           Provides low-cost refurbished laptops, desktops, and internet hotspots to individuals and
           families who qualify.
-        </div>
+        </p>
         <a href="https://www.human-i-t.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/pc4people.png" alt="PCs for People logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Income-based • Devices</div>
+        <img src="/static/img/pc4people.png" class="card-logo" alt="PCs for People logo">
+        <div class="meta-tag">Income-based • Devices</div>
         <div class="title">PCs for People</div>
-        <div class="desc">
+        <p class="desc">
           Offers discounted computers and affordable high-speed internet plans for eligible
           low-income households.
-        </div>
+        </p>
         <a href="https://www.pcsforpeople.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/everyone_on.png" alt="EveryoneOn logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Internet locator</div>
+        <img src="/static/img/everyone_on.png" class="card-logo" alt="EveryoneOn logo">
+        <div class="meta-tag">Internet locator</div>
         <div class="title">EveryoneOn</div>
-        <div class="desc">
+        <p class="desc">
           Helps you find low-cost home internet and devices based on ZIP code, in partnership with
           ISPs and nonprofits.
-        </div>
+        </p>
         <a href="https://www.everyoneon.org" target="_blank" class="btn">Visit site</a>
       </div>
 
     </div>
 
-    <!-- ============================= -->
-    <!--    CAREER DEVELOPMENT / IT    -->
-    <!-- ============================= -->
     <h2>Career Development • Tech Pathways</h2>
     <div class="grid">
 
       <div class="card">
-        <img src="/static/img/gwg.png" alt="Google Career Certificates logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Certificates • Online</div>
+        <img src="/static/img/gwg.png" class="card-logo" alt="Google Career Certificates logo">
+        <div class="meta-tag">Certificates • Online</div>
         <div class="title">Google Career Certificates</div>
-        <div class="desc">
+        <p class="desc">
           Affordable, job-focused certificates in IT support, data analytics, UX design, and
           cybersecurity, with financial aid options.
-        </div>
+        </p>
         <a href="https://grow.google/certificates/" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/coursera.png" alt="Coursera logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Financial aid • Courses</div>
+        <img src="/static/img/coursera.png" class="card-logo" alt="Coursera logo">
+        <div class="meta-tag">Financial aid • Courses</div>
         <div class="title">Coursera Financial Aid</div>
-        <div class="desc">
+        <p class="desc">
           Lets learners apply for financial aid to access paid tech courses, specializations, and
           professional certificates.
-        </div>
+        </p>
         <a href="https://www.coursera.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/year_up.png" alt="Year Up logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> 18–29 • Internship</div>
+        <img src="/static/img/year_up.png" class="card-logo" alt="Year Up logo">
+        <div class="meta-tag">18–29 • Internship</div>
         <div class="title">Year Up</div>
-        <div class="desc">
+        <p class="desc">
           One-year program that combines technical training, professional skills, and corporate
           internships for young adults.
-        </div>
+        </p>
         <a href="https://www.yearup.org" target="_blank" class="btn">Visit site</a>
       </div>
 
     </div>
 
-    <!-- ============================= -->
-    <!--      COMMUNITY SUPPORT        -->
-    <!-- ============================= -->
     <h2>Support Programs • Community • Nonprofits</h2>
     <div class="grid">
 
       <div class="card">
-        <img src="/static/img/npower.png" alt="NPower logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Free training</div>
+        <img src="/static/img/npower.png" class="card-logo" alt="NPower logo">
+        <div class="meta-tag">Free training</div>
         <div class="title">NPower</div>
-        <div class="desc">
+        <p class="desc">
           Provides free tech training and certifications to young adults, veterans, and women from
           underserved communities.
-        </div>
+        </p>
         <a href="https://www.npower.org" target="_blank" class="btn">Visit site</a>
       </div>
 
       <div class="card">
-        <img src="/static/img/tech_ladies.png" alt="Tech Ladies logo" class="card-logo">
-        <div class="meta-tag"><span class="meta-dot"></span> Community • Jobs</div>
+        <img src="/static/img/tech_ladies.png" class="card-logo" alt="Tech Ladies logo">
+        <div class="meta-tag">Community • Jobs</div>
         <div class="title">Tech Ladies</div>
-        <div class="desc">
+        <p class="desc">
           A large community of women in tech with job boards, events, and networking for career
           growth and support.
-        </div>
+        </p>
         <a href="https://www.hiretechladies.com" target="_blank" class="btn">Visit site</a>
       </div>
 
     </div>
+
+    <!-- COMMUNITY SUBMITTED RESOURCES (Dynamic from Database) -->
+    {% if resources %}
+    <h2>Community-Submitted Resources 🌟</h2>
+    <div class="grid">
+      {% for resource in resources %}
+      <div class="card">
+        <span class="community-badge">COMMUNITY</span>
+        <img src="{{ resource.logo_url }}" class="card-logo" alt="{{ resource.name }} logo" onerror="this.src='/static/img/default-logo.png'">
+        
+        {% if resource.tags %}
+        {% for tag in resource.tags %}
+          <span class="meta-tag">{{ tag }}</span>
+        {% endfor %}
+        {% endif %}
+        
+        <div class="title">{{ resource.name }}</div>
+        <p class="desc">{{ resource.notes or "No description provided." }}</p>
+        <a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer" class="btn">Visit Site</a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
   </main>
 
   <footer>
     Built for students and early-career technologists exploring affordable tech pathways.
+    <br>
+    ↑ Back to top
   </footer>
 
-  <button id="backToTop" onclick="scrollToTop()">↑ Back to top</button>
-
-  <script>
-    const topBtn = document.getElementById("backToTop");
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 260) {
-        topBtn.classList.add("show");
-      } else {
-        topBtn.classList.remove("show");
-      }
-    });
-
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
 </body>
 </html>
